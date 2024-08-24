@@ -1,54 +1,74 @@
-output "ec2-id" {
-  description = "The id of the EC2 instance"
-  value       = try(aws_instance.dev-ec2.id, null)
+################################################################################
+# VPC
+################################################################################
+
+output "vpc_id" {
+  description = "The ID of the VPC"
+  value       = try(aws_vpc.this[0].id, null)
 }
 
-output "ec2-arn" {
-  description = "The ARN of the EC2 instance"
-  value       = try(aws_instance.dev-ec2.arn, null)
+output "vpc_arn" {
+  description = "The ARN of the VPC"
+  value       = try(aws_vpc.this[0].arn, null)
 }
 
-output "instance-state" {
-  description = "State of the Instance"
-  value       = try(aws_instance.dev-ec2.instance_state, null)
+output "vpc_cidr_block" {
+  description = "The CIDR block of the VPC"
+  value       = try(aws_vpc.this[0].cidr_block, null)
 }
 
-output "private_dns" {
-  description = "The private DNS name assigned to the instance. Can only be used inside the Amazon EC2, and only available if you've enabled DNS hostnames for your VPC"
-  value       = try(aws_instance.dev-ec2.private_dns, null)
+output "vpc_owner_id" {
+  description = "The ID of the AWS account that owns the VPC"
+  value       = try(aws_vpc.this[0].owner_id, null)
 }
 
-output "public_dns" {
-  description = "The public DNS name assigned to the instance. For EC2-VPC, this is only available if you've enabled DNS hostnames for your VPC"
-  value       = try(aws_instance.dev-ec2.public_dns, null)
+################################################################################
+# Internet Gateway
+################################################################################
+
+output "igw_id" {
+  description = "The ID of the Internet Gateway"
+  value       = try(aws_internet_gateway.this.id, null)
 }
 
-output "private_ip" {
-  description = "The private IP address assigned to the instance"
-  value = try(
-  aws_instance.dev-ec2.private_ip, null)
+output "igw_arn" {
+  description = "The ARN of the Internet Gateway"
+  value       = try(aws_internet_gateway.this.arn, null)
 }
 
-output "ipv6_addresses" {
-  description = "The IPv6 address assigned to the instance, if applicable"
-  value = try(
-  aws_instance.dev-ec2.ipv6_addresses, [])
+################################################################################
+# Publiс Subnets
+################################################################################
+
+output "public_subnets" {
+  description = "List of IDs of public subnets"
+  value       = aws_subnet.public[*].id
 }
 
-output "tags_all" {
-  description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block"
-  value = try(
-  aws_instance.dev-ec2.tags_all, {})
+output "public_subnet_arns" {
+  description = "List of ARNs of public subnets"
+  value       = aws_subnet.public[*].arn
 }
 
-output "ami" {
-  description = "AMI ID that was used to create the instance"
-  value = try(
-  aws_instance.dev-ec2.ami, null)
+################################################################################
+# Private Subnets
+################################################################################
+
+output "private_subnets" {
+  description = "List of IDs of private subnets"
+  value       = aws_subnet.private[*].id
 }
 
-output "availability_zone" {
-  description = "The availability zone of the created instance"
-  value = try(
-  aws_instance.dev-ec2.availability_zone, null)
+################################################################################
+# Static values (arguments)
+################################################################################
+
+output "azs" {
+  description = "A list of availability zones specified as argument to this module"
+  value       = var.azs
+}
+
+output "name" {
+  description = "The name of the VPC specified as argument to this module"
+  value       = var.name
 }

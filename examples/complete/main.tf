@@ -12,8 +12,8 @@ locals {
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Name    = local.name
-    Example = local.name
+    Name       = local.name
+    Example    = local.name
     Repository = "https://github.com/pankajsao11/terraform-aws-ec2"
   }
 }
